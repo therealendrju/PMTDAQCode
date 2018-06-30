@@ -124,7 +124,7 @@ if( Event16) {
 
 CAEN_DGTZ_FreeReadoutBuffer(&bufferCAEN);
 status = CAEN_DGTZ_CloseDigitizer(board_handle);
-
+printf("stopping Acquisition with status: %d\n",status);
 }
 
 
@@ -133,7 +133,8 @@ void Configure() {
 
   // ### Configuration ###
 CAEN_DGTZ_ErrorCode status=0;
-  double FullScale, Offset, TrigDelay;
+  //double FullScale, Offset, 
+  double TrigDelay;
 
  
 
@@ -141,8 +142,8 @@ CAEN_DGTZ_ErrorCode status=0;
 
 
 
-  FullScale = 1.0e-3*((double) daq_control.full_scale);
-  Offset = 1.0e-3*((double) daq_control.dc_offset);
+  //FullScale = 1.0e-3*((double) daq_control.full_scale);
+  //Offset = 1.0e-3*((double) daq_control.dc_offset);
 
   
   
@@ -150,13 +151,12 @@ CAEN_DGTZ_ErrorCode status=0;
 
 CAEN_DGTZ_ReadRegister(board_handle,0x8114,&posttrig_reg);
 printf("----------------------------------");
-printf("Post Trig Number of Samples %ld \n",posttrig_reg);
+printf("Post Trig Number of Samples %d \n",posttrig_reg);
 
 
   TrigDelay = ((double)(daq_control.number_of_samples+daq_control.trig_delay*1000))/(double)(daq_control.number_of_samples)*100;
 	//TrigDelay
-
-	 int readTrig;
+  uint32_t readTrig;
   printf("Trig Delay %d %f \n",(int)TrigDelay,TrigDelay);
 
   status |= CAEN_DGTZ_GetPostTriggerSize(board_handle, &readTrig);
@@ -176,7 +176,7 @@ status |= CAEN_DGTZ_SetIOLevel(board_handle, 0);   // 1= TTL, 0=NIM
 
 CAEN_DGTZ_ReadRegister(board_handle,0x8114,&posttrig_reg);
 printf("----------------------------------");
-printf("Post Trig Number of Samples %ld \n",posttrig_reg);
+printf("Post Trig Number of Samples %d \n",posttrig_reg);
 
 
 
@@ -333,7 +333,7 @@ for(;i<daq_control.number_of_pmt*DESmultiplier;i+=DESmultiplier)	newmask|= (1 <<
 //for(i;i<daq_control.number_of_pmt*DESmultiplier;i+=1)	newmask|= (1 << i);
 
 printf("++++++ new mask %d \n",newmask);
-printf("------ daq_control.trig_level 0 %ld \n",daq_control.trig_level);
+printf("------ daq_control.trig_level 0 %d \n",daq_control.trig_level);
 
 //long int offs=0x8900;
 //int DCoffset[8]={offs-230,offs-250,offs-125,offs-350,0,0,0,0};
@@ -391,21 +391,21 @@ long int DCoffset[8]={offs-corrections[0]*corr_fact,offs-corrections[1]*corr_fac
 
 //long int value=daq_control.trig_level*10;
 long int value=daq_control.trig_level;
-long int valueout;
+uint32_t valueout;
 
 
-printf("------ daq_control.dc_offset  %ld \n",daq_control.dc_offset);
+printf("------ daq_control.dc_offset  %d \n",daq_control.dc_offset);
 
-printf("------ daq_control.trig_level  %ld \n",daq_control.trig_level);
+printf("------ daq_control.trig_level  %d \n",daq_control.trig_level);
 
 printf("------ value  %ld \n",value);
 
 printf("------ DCOffset  %ld \n",DCoffset[i]);
-
+ 
 status |= CAEN_DGTZ_SetChannelEnableMask(board_handle, newmask);
 	for(i=0; i<8; i++) {
         	if (newmask & (1<<i)) {
-		printf("Setting DC Offset, channel %ld to %ld \n", i,DCoffset[i]);
+		printf("Setting DC Offset, channel %d to %ld \n", i,DCoffset[i]);
                 status |= CAEN_DGTZ_SetChannelDCOffset(board_handle, i, DCoffset[i]);
 		//status |= CAEN_DGTZ_SetChannelSelfTrigger(board_handle, CAEN_DGTZ_TRGMODE_ACQ_AND_EXTOUT, (1<<i));
 		//status |= CAEN_DGTZ_SetChannelSelfTrigger(board_handle,CAEN_DGTZ_TRGMODE_EXTOUT_ONLY , (1<<i));
@@ -422,15 +422,15 @@ status |= CAEN_DGTZ_SetChannelEnableMask(board_handle, newmask);
 		}
 
 		printf("---------------------------------- \n");
-		printf("Setting DC Offset, channel %ld to %ld \n",i,DCoffset[i]);
+		printf("Setting DC Offset, channel %d to %ld \n",i,DCoffset[i]);
 
-		printf("------ daq_control.trig_source, %ld \n", daq_control.trig_source);
-		printf("------ daq_control.trig_level, channel %ld, %ld \n",i,daq_control.trig_level);
-		printf("------ value, channel %ld, %ld \n",i,value);
+		printf("------ daq_control.trig_source, %d \n", daq_control.trig_source);
+		printf("------ daq_control.trig_level, channel %d, %d \n",i,daq_control.trig_level);
+		printf("------ value, channel %d, %ld \n",i,value);
 
-status |= CAEN_DGTZ_GetChannelTriggerThreshold(board_handle, i, &valueout); 
+	status |= CAEN_DGTZ_GetChannelTriggerThreshold(board_handle, i, &valueout); 
 		
-		printf(" threshold value before setting, channel %d, %ld \n",i,valueout);
+		printf(" threshold value before setting, channel %d, %d \n",i,valueout);
 
                 status |= CAEN_DGTZ_SetChannelTriggerThreshold(board_handle, i, value); 
 
@@ -440,16 +440,16 @@ status |= CAEN_DGTZ_GetChannelTriggerThreshold(board_handle, i, &valueout);
 		//status |= CAEN_DGTZ_SetPostTriggerSize(board_handle, (int)TrigDelay);
 
 		printf("---------------------------------- \n");
-		printf("Setting DC Offset, channel %ld to %ld \n",i,DCoffset[i]);
-		printf("------ daq_control.trig_source, %ld \n", daq_control.trig_source);
-		printf("------ daq_control.trig_level, channel %ld, %ld \n",i,daq_control.trig_level);
-		printf("------ value, channel %ld, %ld \n",i,value);
+		printf("Setting DC Offset, channel %d to %ld \n",i,DCoffset[i]);
+		printf("------ daq_control.trig_source, %d \n", daq_control.trig_source);
+		printf("------ daq_control.trig_level, channel %d, %d \n",i,daq_control.trig_level);
+		printf("------ value, channel %d, %ld \n",i,value);
 		
 		printf("setting channel %d threshold to: %ld \n",i,value);
 		
 		status |= CAEN_DGTZ_GetChannelTriggerThreshold(board_handle, i, &valueout); 
 		
-		printf("threshold value after setting, channel %d, %ld \n",i,valueout);
+		printf("threshold value after setting, channel %d, %d \n",i,valueout);
 
 				   }
 			    }
@@ -588,6 +588,7 @@ unsigned short * sdata= (unsigned short*) malloc(nsam);
   
   
   FirstTime = get_time(); 
+  CurrentTime = get_time(); // putting it here to avoid warning
   do {
 
  // printf("producer: in loop \n" );
@@ -727,7 +728,7 @@ unsigned short * sdata= (unsigned short*) malloc(nsam);
 				     totsiz+=daq_control.number_of_samples/4 + PMT_HEADER_SIZE*2;
 				}	
 
-			int readTrig2;
+			uint32_t readTrig2;
 			CAEN_DGTZ_GetPostTriggerSize(board_handle, &readTrig2);
  			printf("&&&&&&&& ReadTrig2 after %d \n",readTrig2);
 
@@ -809,7 +810,7 @@ printf("Reading at (Trg Rate: %.2f Hz)\n", (float)Netot*1000.0f/(float)ElapsedTi
   /* Stop DAQ */
 
   FILE * rateout=fopen("rates.txt","a");
-  fprintf(rateout,"%d %.2f Hz \n",run_control.run_number,(float)Netot*1000.0f/(float)ElapsedTime);
+  fprintf(rateout,"%ld %.2f Hz \n",run_control.run_number,(float)Netot*1000.0f/(float)ElapsedTime);
 /*   StopAcq(); */
  fclose(rateout);
 

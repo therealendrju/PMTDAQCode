@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 
   unsigned long *buffer;
   unsigned long buffer_size;
-  int rc;
+  
  
   char strpid[20];
   pid_t mypid;
@@ -47,6 +47,7 @@ int main(int argc, char *argv[]) {
 #ifdef _WARP_USE_SHM_
 
 #ifdef WARP_USE_SHM_BUFFER 
+  int rc=0;
   key_t shmbuf_sem_key, shmbuf_shm_key;
   unsigned short b_array[2];
 #endif
@@ -70,7 +71,7 @@ int main(int argc, char *argv[]) {
   sigaction (SIGUSR1, &new_action, NULL);
   sigaction (SIGTERM, &new_action, NULL);
 
-  rc = 0;
+ 
   debug = false;
 
 printf(" par 11_1:  \n ");
@@ -309,9 +310,9 @@ printf("++++++main: buffer_size = %lu (bytes) \n",buffer_size);
 
   free(buffer);
 
-  system("rm daq.pid");
+  int deleted=system("rm daq.pid");
 
-  printf("\n main:  reporting that all threads have terminated\n");
+  printf("\n main:  reporting that all threads have terminated\n  File deleting result: %d \n",deleted);
   /*   printf(" acquired  = %d \n",written_ev); */
   /*   printf(" processed = %d \n",read_ev); */
   /*   printf("      lost = %d \n",lost_ev); */
