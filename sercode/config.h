@@ -32,7 +32,7 @@
 #define HAVE_UNISTD_H 1
 
 /* Name of package */
-#define PACKAGE "serfit100"
+#define PACKAGE "newser"
 
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT ""

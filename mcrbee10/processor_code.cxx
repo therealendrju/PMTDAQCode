@@ -2826,7 +2826,7 @@ std::cout << "++++SER onset:" << ionset_primary << " window: " << timeWindow << 
 		  //              if (!p->isGUI && !p->isSer && noise==false )
                   if (!p->isGUI && !p->isSer )
 		    {
-		      if (integral-correction >= p->PMTValley[ipmt])
+		      if (p->is_ser_found && integral-correction >= p->PMTValley[ipmt])
 			s1tot += (integral-correction);
 		    }
 		  else
@@ -2838,7 +2838,7 @@ std::cout << "++++SER onset:" << ionset_primary << " window: " << timeWindow << 
 		      //              if (!p->isGUI && !p->isSer && noise==false )
 		      if (!p->isGUI && !p->isSer )
 			{
-			  if (integralfast - correctionfast >= p->PMTValley[ipmt])
+			  if (p->is_ser_found && integralfast - correctionfast >= p->PMTValley[ipmt])
 			    s1fast += (integralfast - correctionfast);
 			}
 		      else

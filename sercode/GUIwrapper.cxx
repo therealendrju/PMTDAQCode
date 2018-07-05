@@ -28,7 +28,7 @@ GUIwrapper::GUIwrapper(int nchans,int in,vector<string> files,  std::map<std::st
 
 display_mode=0;
 
-for(int i=0;i<files.size();i++)
+for(unsigned int i=0;i<files.size();i++)
   {filelist.push_back(files[i]);
    cout <<"filelist" << filelist[i] << endl;	
 	}
@@ -300,6 +300,12 @@ analysis->get_params_from_file();
 		fAuxFrame->get_params_from_frame(pval,plow,phigh);
 		analysis->set_param_arrays(pval,plow,phigh);
 		int status=analysis->fit_channel(chan);
+		
+		if(status)
+		{// fit converges succesfully, do something
+		  std::cout << "Fit Converged Succesfully" << std::endl;
+		  
+		}
 		
 		fAuxFrame->draw_histo_in_pads(analysis->get_channel(chan)->get_histo(),chan);
 		fMainFrame->draw_histo_in_pad(analysis->get_channel(chan)->get_histo(),chan);

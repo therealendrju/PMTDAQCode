@@ -576,7 +576,7 @@ void process::Fill_events(int run,char * fname,vector<string> filelist)
   int ret=0;
 
   std::cout << "---- files list: size" << filelist.size() << " " <<filelist[0] <<  std::endl;
-  for(int nfile=0;nfile<filelist.size();nfile++)
+  for(unsigned int nfile=0;nfile<filelist.size();nfile++)
 {
 
     ppp.open_file(filelist[nfile].c_str());

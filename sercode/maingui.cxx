@@ -27,7 +27,7 @@ int main(int argc, char ** argv)
 //TGMainFrame *MainFrame=  new TGMainFrame(gClient->GetRoot(),400,400);
 
 double thresh=0;
-int intbef=0,intaft=0,window=0;
+//int intbef=0,intaft=0,window=0;
 vector<string> files;
 int nchannels=0,nrun=0;
 
@@ -47,9 +47,9 @@ int nchannels=0,nrun=0;
   
   bool forcecalc=false;  //force calculation (instead of using existing root file)
   
-  int channel=0;
-  char par=0;
- double value=0;
+//  int channel=0;
+//  char par=0;
+// double value=0;
   
   // Invokes member function `int operator ()(void);'
   while ((option_char = getopt (argc,argv,":m:b:a:w:i:fx:s:d:h")) != EOF)
@@ -90,7 +90,7 @@ int nchannels=0,nrun=0;
       
    std::cout << "second test " << parameters["threshold1"] << std::endl; 
       
-GUIwrapper * hh;
+
 
 
 if(forcecalc && files.size()==0 )    // forcing calculation but generic files not yet created.
@@ -109,7 +109,7 @@ else if(!forcecalc)                  //check whether .root file exists
         
   }
 
-for(int ix=0;ix<files.size();ix++)
+for(unsigned int ix=0;ix<files.size();ix++)
   std::cout << "files used: " << files[ix] << std::endl;
 
 			
@@ -117,7 +117,7 @@ for(int ix=0;ix<files.size();ix++)
 //PMTwidget *tt=new PMTwidget(gClient->GetRoot(),200,40);
 TApplication theApp("Apqup",&argc,argv);
 cout <<"running parameters " << argv[1] << " " << argv[2] << " " << thresh << endl; 
-hh=new GUIwrapper(nchannels,nrun,files,parameters);
+GUIwrapper * hh=new GUIwrapper(nchannels,nrun,files,parameters);
 
 
 theApp.Run();

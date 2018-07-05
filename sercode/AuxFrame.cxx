@@ -319,7 +319,7 @@ void AuxFrame::draw_extra_func_in_pads(TH1F * histo,int pad)
    Int_t ParXo=NEXP*2+1;    // number of Xo param.
    Int_t ParSig=NEXP*2+2;   // number of sigma param
   
-   Double_t Xran;
+   Double_t Xran=0;
   for(Double_t x=func->GetParameter(ParXo);func->Eval(x,0,0,0)>=.1+func->GetParameter(0) && x<=8000 ;x+=func->GetParameter(ParSig))	
     {
       Xran=x;
@@ -410,6 +410,7 @@ int AuxFrame::redraw_frame_with_gauss(int ngauss)
 	this->MapSubwindows();
 	this->Resize(this->GetDefaultSize());
 	this->MapWindow();
+return 1;	
 }	
 
 
