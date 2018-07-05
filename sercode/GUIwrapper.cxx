@@ -227,7 +227,7 @@ int onoff[NCHANS];
 
 fMainFrame->GetOffWindows(onoff,NCHANS);
 	
-analysis->save_results_toDB(runin,onoff);
+//analysis->save_results_toDB(runin,onoff);
 
 
 cout << "saving to DB" << endl;

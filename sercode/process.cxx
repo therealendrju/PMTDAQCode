@@ -75,7 +75,7 @@ char DBname[20];
   cout << " using database " << DBname  << endl;;
 
 //std::exit(-1);
-  sql=new sql_interface(DBname);
+  //sql=new sql_interface(DBname);
 
 gStyle=new TStyle();
 gStyle->SetOptFit();

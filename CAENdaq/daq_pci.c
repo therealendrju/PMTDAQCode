@@ -728,14 +728,14 @@ unsigned short * sdata= (unsigned short*) malloc(nsam);
 				     totsiz+=daq_control.number_of_samples/4 + PMT_HEADER_SIZE*2;
 				}	
 
-			uint32_t readTrig2;
-			CAEN_DGTZ_GetPostTriggerSize(board_handle, &readTrig2);
- 			printf("&&&&&&&& ReadTrig2 after %d \n",readTrig2);
+			//uint32_t readTrig2;
+			//CAEN_DGTZ_GetPostTriggerSize(board_handle, &readTrig2);
+ 			//printf("&&&&&&&& ReadTrig2 after %d \n",readTrig2);
 
 			//uint32_t posttrig_reg;
 
 			//CAEN_DGTZ_ReadRegister(board_handle,0x8114,&posttrig_reg);
-			printf("----------------------------------\n");
+			//printf("----------------------------------\n");
 			//printf("Post Trig Number of Samples %d \n",posttrig_reg);
 
 			  sem_post(&fullBuffers);

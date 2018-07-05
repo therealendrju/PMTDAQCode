@@ -141,7 +141,7 @@ void create_standard_files(int run,vector<string> *files)
   char path[20];
   
   int ninfile=1000;
- sprintf(path,"/pool/Run%06d/",run);
+ sprintf(path,"/data/Run%06d/",run);
  
    char argv[100];
  
