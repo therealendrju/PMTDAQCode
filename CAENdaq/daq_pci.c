@@ -77,7 +77,7 @@ void FindDevices(void) {
 
   // Find all digitizers
  // options = "cal=1 dma=1";
-CAEN_DGTZ_ErrorCode status=CAEN_DGTZ_OpenDigitizer(CAEN_DGTZ_PCI_OpticalLink,0,0,0,&board_handle);
+CAEN_DGTZ_ErrorCode status=CAEN_DGTZ_OpenDigitizer(CAEN_DGTZ_PCI_OpticalLink,1,0,0,&board_handle);
 if (status) {
 		printf("error in open nr %d",status);
 		exit(status);
@@ -351,8 +351,15 @@ printf("------ daq_control.trig_level 0 %d \n",daq_control.trig_level);
 
 //Correction for DCoffset input to output
 
-float corr_grad = -13.442200; //for pmt
-float corr_const= 44453;	//for pmt	
+//Manchester Config:
+//float corr_grad = -13.442200; //for pmt
+//float corr_const= 44453;	//for pmt	
+
+//CERN Config:
+float corr_grad = -58.4256; //for pmt
+float corr_const= 67407.7;	//for pmt	
+
+
 
 //float corr_grad = -13.3397; //for pulser
 //float corr_const= 44778.3;  //for pulser
@@ -361,7 +368,7 @@ printf("------ corr_grad/  %f  \n",corr_grad);
 printf("------ corr_const/  %f  \n",corr_const);
 
 long int offs=daq_control.dc_offset*corr_grad+corr_const;
-
+//offs=20000;
 //long int triglevel = daq_control.trig_level*corr_grad+corr_const;
 //printf("-------- triglevel/ 0 %ld \n", triglevel);
 
@@ -369,8 +376,10 @@ long int offs=daq_control.dc_offset*corr_grad+corr_const;
 
 printf("------ offs/  %ld  \n",offs);
 
-float corr_fact=15/1.13;
-
+// //Manchester Config:
+//float corr_fact=15/1.13;
+//CERN Config
+float corr_fact=1;
 //printf("------ corr_fact/ 0 %f  \n",corr_fact);
 
 int corrections[8]={0.,0.,0.,0.,0.,0.,0.,0.};
@@ -416,10 +425,10 @@ status |= CAEN_DGTZ_SetChannelEnableMask(board_handle, newmask);
 		}
 		else if (daq_control.trig_source<9){
 			if(i==daq_control.trig_source)	
-//		    	CAEN_DGTZ_SetChannelSelfTrigger(board_handle,CAEN_DGTZ_TRGMODE_ACQ_AND_EXTOUT , (1<<i));
-  printf("_----- are we here? \n");              
-		status |= CAEN_DGTZ_SetChannelSelfTrigger(board_handle,CAEN_DGTZ_TRGMODE_ACQ_ONLY , (1<<i));
-		}
+	{	//		    	CAEN_DGTZ_SetChannelSelfTrigger(board_handle,CAEN_DGTZ_TRGMODE_ACQ_AND_EXTOUT , (1<<i));
+			  printf("_----- are we here? \n");              
+			status |= CAEN_DGTZ_SetChannelSelfTrigger(board_handle,CAEN_DGTZ_TRGMODE_ACQ_ONLY , (1<<i));} //end if 
+		} //end else if
 
 		printf("---------------------------------- \n");
 		printf("Setting DC Offset, channel %d to %ld \n",i,DCoffset[i]);
@@ -608,6 +617,7 @@ unsigned short * sdata= (unsigned short*) malloc(nsam);
 ///////////////////////start CAEN readout
 		/* Read data from the board */
 		//CAEN_DGTZ_SendSWtrigger(board_handle);
+		//Andrzej: uncomment line above if you want a software trigger
 
 		//status |= CAEN_DGTZ_GetChannelTriggerThreshold(board_handle, 0, value); 		
 		//printf("------value %ld \n",i,value2);

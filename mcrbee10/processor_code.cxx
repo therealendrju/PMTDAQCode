@@ -2522,8 +2522,8 @@ std::cout << "In calculate integrals for primaries" << endl;
 	  threshold_multiplier= p->threshold;
   
 //threshold_multiplier=4.5;
-  //cout << "---parameters " << threshold_multiplier << " " << windowLenght << " " <<
-  //  channelsAfter << " " << channelsBefore << endl; 
+  cout << "---parameters " << threshold_multiplier << " " << windowLenght << " " <<
+   channelsAfter << " " << channelsBefore << endl; 
   
  // cout << " ++++ windows " <<  windowLenght << " " << channelsBefore << " " << channelsAfter << " " <<  threshold_multiplier << endl;
 
@@ -2555,8 +2555,8 @@ std::cout << "In calculate integrals for primaries" << endl;
   if(p->isAverage)
   	timeWindow = (int) (15000./samplingfreq);
   else if(p->isSer)
-	{timeWindow = (int) (7000./samplingfreq);
-         ionset_primary=1400;
+	{timeWindow = (int) (4000./samplingfreq);
+         ionset_primary=4000;
 	}
   else
 	timeWindow = (int) (7000./samplingfreq);

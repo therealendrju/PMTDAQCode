@@ -123,7 +123,7 @@ printf(" par 11_1:  \n ");
 
 	}
 
-   daq_control.trig_source=0;
+ //  daq_control.trig_source=0;
  printf("trigger source: %d \n",daq_control.trig_source);
 
 //return 0;

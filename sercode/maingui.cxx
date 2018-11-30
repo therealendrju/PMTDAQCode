@@ -55,7 +55,7 @@ int nchannels=0,nrun=0;
   while ((option_char = getopt (argc,argv,":m:b:a:w:i:fx:s:d:h")) != EOF)
     switch (option_char)
       {  
-         case 'm': parameters["threshhold"]= atof (optarg); break;
+         case 'm': parameters["threshold"]= atof (optarg); break;
 	 case 'b': parameters["intbef"]=atoi (optarg); break;
 	 case 'a': parameters["intaft"]=atoi (optarg); break;
 	 case 'w': parameters["window"]=atoi (optarg); break;
@@ -112,6 +112,7 @@ else if(!forcecalc)                  //check whether .root file exists
 for(unsigned int ix=0;ix<files.size();ix++)
   std::cout << "files used: " << files[ix] << std::endl;
 
+//return 1;
 			
 //cout << " thresh " << thresh <<endl;
 //PMTwidget *tt=new PMTwidget(gClient->GetRoot(),200,40);
