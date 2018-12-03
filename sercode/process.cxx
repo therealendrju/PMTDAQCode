@@ -646,39 +646,51 @@ ostream& operator<<(ostream& output,results a)
 
 void process::save_results_to_file(int runin)
 {
-	ofstream out(Form("results_run%d.dat",runin));
 
-	ofstream wvformsout(Form("wvformresults_run%d.dat",runin));	
 
+// save SER x0, sigma and valley to txt file for mcrbee to read in 
+	ofstream outfile (Form("ser_run%d.txt",runin));
+	// sers stored in results object
+	results sers[NCHANNELS+1];
+	
+	std::cout << NCHANNELS << std::endl; 	
+	for (int i = 1; i <= NCHANNELS; i++) {
+		// get ser for channel i-1
+		sers[i] = ser_chan[i-1]->get_results();
+		// write out to file
+		outfile << i-1 << " " << sers[i].xo << " " << sers[i].sigma << " " << sers[i].valley;
+		if (i != NCHANNELS) {
+			outfile << endl;
+		}		
+	}
+	outfile.close();	
+	
+
+/* 
+//saves all SER results	 
+ofstream out(Form("results_run%d.dat",runin));
+		
 	results sers[NCHANNELS+1];
 	for(int i=1;i<=NCHANNELS;i++)
 		{sers[i]=ser_chan[i-1]->get_results();
-
 		out << i-1 << " " << sers[i] << endl;
 		cout << i-1 << " " << sers[i] << endl;
-
 		}
-			
-
-	
-
 	out.close();
+*/
 
-
+/* 
+//doesn't work
+ofstream wvformsout(Form("wvformresults_run%d.dat",runin));
 	for(int j=0;j<250;j++)
 		{
 		wvformsout << j << " ";
 		for(int i=1;i<=NCHANNELS;i++)
 			{wvformsout << ser_chan[i-1]->get_histo()->GetBinContent(j) << " "; } 
-
 		wvformsout << endl;
-
-
 		}
-
-
 wvformsout.close();
-
+*/
 }
 
 

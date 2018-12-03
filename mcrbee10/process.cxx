@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
   if (n < 0)
     do {
       ppp.open_file(argv[ifile++]);
-      ppp.get_database();
+      ppp.get_sers();
       do {
 	ret = ppp.readevent();
 	if(ret == 0) ppp.process_event();
@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
       strcat(filename, namelist[i]->d_name);
 //       std::cout << filename << " ------ " << namelist[i]->d_name << endl;
       ppp.open_file(filename);
-      ppp.get_database();
+      ppp.get_sers();
       do {
 	ret = ppp.readevent();
 	if(ret == 0) ppp.process_event();

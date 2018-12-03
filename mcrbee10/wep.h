@@ -74,6 +74,7 @@ class wep {
   int get_event(int run, int event);
   int readevent(int n=0);
   int get_database();
+  int get_sers();
   int get_nsamples(void) {return nSAMPLES;}
   float get_sampling(void) {return sampling;}
 

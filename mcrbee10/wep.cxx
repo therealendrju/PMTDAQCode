@@ -1,5 +1,7 @@
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 
 #include "wep.h"
 
@@ -284,7 +286,7 @@ int wep::get_database()
  
 
 
- PMTSer.resize(0);
+  PMTSer.resize(0);
   isPMTOn.resize(0);
   PMTSigmaSer.resize(0);
   PMTValley.resize(0);
@@ -444,6 +446,47 @@ int wep::get_database()
   delete[] onoff;	
   delete[] rests;
   return 0;
+}
+
+// get sers from txt file - hard coded for the broken channel
+int wep::get_sers() {
+	PMTSer.resize(0);
+  	isPMTOn.resize(0);
+  	PMTSigmaSer.resize(0);
+  	PMTValley.resize(0);
+
+	// open ser txt file, saved after running sercode
+	stringstream ss;
+	ss << "../sercode/ser_run" << nRUN << ".txt";
+	string filename = ss.str();
+	ifstream serFile(filename);
+	if (serFile.is_open()) {
+		is_ser_found = true;
+		while (!serFile.eof()) {
+			// read in line from file			
+			int channel_num; double x0; double sigmax0; double valley;
+			serFile >> channel_num >> x0 >> sigmax0 >> valley;
+			// add ser values to wep object
+			if (channel_num == 1) { 		// broken channel
+				isPMTOn.push_back(false);			
+				PMTSer.push_back(0);
+				PMTSigmaSer.push_back(0);
+				PMTValley.push_back(0);			
+			}
+			else {					// working channels
+				isPMTOn.push_back(true);			
+				PMTSer.push_back(x0);
+				PMTSigmaSer.push_back(sigmax0);
+				PMTValley.push_back(valley);
+			}
+		}
+	}
+	else {
+		cout << "Error: cannot open ser file, sercode must be run first." << endl;
+		is_ser_found = false;
+		exit(1);
+	}
+ 	return 0;
 }
 
 
