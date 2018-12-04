@@ -157,7 +157,7 @@ int wep::get_event(int run, int event) {
     //    warp_open((char*) filename.data());
     if(!c1) this->close_file();
     this->open_file(filename);
-    this->get_database();
+    this->get_sers();
   //}
 
   std::cout << "filename: " << filename << std::endl;

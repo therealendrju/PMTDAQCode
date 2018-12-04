@@ -301,7 +301,7 @@ Bool_t WEDMainFrame::ProcessMessage(Long_t msg, Long_t parm1, Long_t)
 	  dir = fi.fIniDir;
 	  ppp->open_file(fi.fFilename);
 	  file_is_open = true;
-	  ppp->get_database();
+	  ppp->get_sers();
 	}
 	break;
 

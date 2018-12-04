@@ -44,10 +44,12 @@ int main(int argc, char **argv)
     {
 		int nev,nrun,nrow;
 		char symbol;
-		for ( ;!sel_file.eof(); )
+		int counter = 0;
+		while (!sel_file.eof())
 		{
 			sel_file >> symbol >> nrow >> symbol >> nrun >> symbol >> nev >> symbol;
-			cout << symbol << nrow << symbol << nrun << symbol << nev << symbol << endl;
+			//cout << symbol << nrow << symbol << nrun << symbol << nev << symbol << endl;
+			cout << counter << endl;
 			if (sel_run.size() != 0)
 			{
 				//check that the entry is different from the previous one
@@ -63,6 +65,7 @@ int main(int argc, char **argv)
 				sel_run.push_back(nrun);
 				sel_event.push_back(nev);
 			}
+			counter++;
 		}
     }
 	sel_file.close();
