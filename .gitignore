@@ -5,3 +5,6 @@
 *.o
 *.png
 *.pid
+
+!quick_readme.txt
+!ReadMeByLan.txt

@@ -80,13 +80,6 @@ int wep::close_file(void) {
 
 int wep::readevent(int nnn) {
 
-	/*
-  if (isRawWaveforms == true) {
-	// in raw waveform mode just using as a counter of number of events that exist
-	return 0;
-  }
-*/
-
   int ret,nr,ne,ns;
   int dummy[800000];
   char time_string[26];
