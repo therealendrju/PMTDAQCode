@@ -80,6 +80,13 @@ int wep::close_file(void) {
 
 int wep::readevent(int nnn) {
 
+	/*
+  if (isRawWaveforms == true) {
+	// in raw waveform mode just using as a counter of number of events that exist
+	return 0;
+  }
+*/
+
   int ret,nr,ne,ns;
   int dummy[800000];
   char time_string[26];
@@ -157,7 +164,19 @@ int wep::get_event(int run, int event) {
     //    warp_open((char*) filename.data());
     if(!c1) this->close_file();
     this->open_file(filename);
-    this->get_sers();
+    
+    if (isRawWaveforms == true) {
+	// in raw waveform mode, don't get sers, just set all pmts to on to allow output of raw waveforms
+	for (int i = 0; i < nPMT; i++) {
+		isPMTOn.push_back(true);
+	}
+	is_ser_found = false;
+    }
+    else {
+    	this->get_sers();
+    }
+
+	
   //}
 
   std::cout << "filename: " << filename << std::endl;
@@ -448,7 +467,7 @@ int wep::get_database()
   return 0;
 }
 
-// get sers from txt file - hard coded for the broken channel
+// get sers from txt file
 int wep::get_sers() {
 	PMTSer.resize(0);
   	isPMTOn.resize(0);
@@ -464,22 +483,23 @@ int wep::get_sers() {
 		is_ser_found = true;
 		while (!serFile.eof()) {
 			// read in line from file			
-			int channel_num; double x0; double sigmax0; double valley;
-			serFile >> channel_num >> x0 >> sigmax0 >> valley;
+			int channel_num; double x0; double sigmax0; double valley; int onoff;
+			serFile >> channel_num >> x0 >> sigmax0 >> valley >> onoff;
 			// add ser values to wep object
-			if (channel_num == 1) { 		// broken channel
+			if (onoff == 0) { 			// pmt off
 				isPMTOn.push_back(false);			
 				PMTSer.push_back(0);
 				PMTSigmaSer.push_back(0);
 				PMTValley.push_back(0);			
 			}
-			else {					// working channels
+			else {					// pmt on
 				isPMTOn.push_back(true);			
 				PMTSer.push_back(x0);
 				PMTSigmaSer.push_back(sigmax0);
 				PMTValley.push_back(valley);
 			}
 		}
+		serFile.close();
 	}
 	else {
 		cout << "Error: cannot open ser file, sercode must be run first." << endl;

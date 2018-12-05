@@ -61,7 +61,7 @@ void get_param_arrays(double *pval,double *plow,double *phigh);
 void set_param_arrays(double *pval,double *plow,double *phigh);
 
 void save_results_toDB(int runin,int * onoff);
-void save_results_to_file(int runin);
+void save_results_to_file(int runin,int onoff[]);
 
 
 static int NEXP;

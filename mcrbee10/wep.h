@@ -50,6 +50,7 @@ class wep {
   bool isSer;
   bool isGUI;
   bool isAverage;
+  bool isRawWaveforms;
   bool DBread;
   int DBrunread;  
 

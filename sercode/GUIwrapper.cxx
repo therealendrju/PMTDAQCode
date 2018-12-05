@@ -238,8 +238,10 @@ cout << "saving to DB" << endl;
 
 void GUIwrapper::SaveFile()
 {
+	int onoff[NCHANS];
 
-	analysis->save_results_to_file(runin);
+	fMainFrame->GetOffWindows(onoff,NCHANS);
+	analysis->save_results_to_file(runin,onoff);
 
 
 	cout << "saving to File" << endl;

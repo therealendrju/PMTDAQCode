@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <fstream>
 #include <vector>
+#include <string>
+#include <sstream>
 
 #include "wep.h"
 #include "processor_code.h"
@@ -44,12 +46,10 @@ int main(int argc, char **argv)
     {
 		int nev,nrun,nrow;
 		char symbol;
-		int counter = 0;
 		while (!sel_file.eof())
 		{
 			sel_file >> symbol >> nrow >> symbol >> nrun >> symbol >> nev >> symbol;
-			//cout << symbol << nrow << symbol << nrun << symbol << nev << symbol << endl;
-			cout << counter << endl;
+			cout << symbol << nrow << symbol << nrun << symbol << nev << symbol << endl;
 			if (sel_run.size() != 0)
 			{
 				//check that the entry is different from the previous one
@@ -65,7 +65,6 @@ int main(int argc, char **argv)
 				sel_run.push_back(nrun);
 				sel_event.push_back(nev);
 			}
-			counter++;
 		}
     }
 	sel_file.close();
@@ -77,8 +76,7 @@ int main(int argc, char **argv)
 	
 	cout << "Read " << sel_run.size() << " events from file " << argv[1] << endl;
 	//for (size_t i=0;i<sel_run.size();i++)
-	// cout << "Run: " << sel_run[i] << ", Event: " << sel_event[i] << endl;
-	
+		//cout << "Run: " << sel_run[i] << ", Event: " << sel_event[i] << endl;
 	wep ppp;
 	
 	//Skips the baseline refinement!
@@ -95,7 +93,6 @@ int main(int argc, char **argv)
 //get first event to extract number of samples
 	int found = ppp.get_event(sel_run[0], sel_event[0]);
 		 
-
 	const int nsamples = ppp.nSAMPLES;
 	const int npmts = ppp.nPMT;
 	const float samplingfrequency = 1.; 
@@ -118,7 +115,7 @@ int main(int argc, char **argv)
 		   }		
 		}
 
-		
+	
 	//Event loop
 	for(size_t i=0;i<sel_run.size();i++)
 	{
@@ -139,17 +136,21 @@ int main(int argc, char **argv)
 			cout << sel_run[i] << " " << ppp.get_sampling();
 			return 1; 
 		}
+		
+		
 		for (int i=0;i<nsamples;i++)
 			{sumpulse[i] += adccsum[i];
 
 			for(int ipmt=0;ipmt<npmts;ipmt++)
 				{
+				// sums for histrograms of average waveforms
 				sumpulse_int[i]+=adccsumcorr[i+ipmt*nsamples];
  				rawpulse[i] += adccraw[i+ipmt*nsamples];
 				sumpulse_ch[ipmt][i]+=adccsumcorr[i+ipmt*nsamples];
 				rawpulse_ch[ipmt][i]+=adccraw[i+ipmt*nsamples];
 				}
 			}
+				
 		}
 	
 //	//Write sumpulse on a TH1F

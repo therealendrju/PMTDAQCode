@@ -644,7 +644,7 @@ ostream& operator<<(ostream& output,results a)
 
 
 
-void process::save_results_to_file(int runin)
+void process::save_results_to_file(int runin, int onoff[])
 {
 
 
@@ -658,12 +658,12 @@ void process::save_results_to_file(int runin)
 		// get ser for channel i-1
 		sers[i] = ser_chan[i-1]->get_results();
 		// write out to file
-		outfile << i-1 << " " << sers[i].xo << " " << sers[i].sigma << " " << sers[i].valley;
+		outfile << i-1 << " " << sers[i].xo << " " << sers[i].sigma << " " << sers[i].valley << " " << onoff[i-1];
 		if (i != NCHANNELS) {
 			outfile << endl;
 		}		
 	}
-	outfile.close();	
+	outfile.close();
 	
 
 /* 
