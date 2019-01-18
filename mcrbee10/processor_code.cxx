@@ -784,7 +784,7 @@ std::cout << "++++ number of PMTS " << npmt << " isPMTOn size " << p->isPMTOn.si
       if(p->isPMTOn[ipmt]) 
 	{
 	for(int i=0; i<nsamples; i++) {
-	if(pin[idx[ipmt]+i] <= -sat_level) 
+	if(pin[idx[ipmt]+i] <= sat_level) 
 	{
 	  saturated=true;
 	  if (i<firstSaturationChan) firstSaturationChan = i;

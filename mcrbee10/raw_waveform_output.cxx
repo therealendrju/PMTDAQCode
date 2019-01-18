@@ -57,6 +57,7 @@ int main(int argc, char **argv) {    // input args: [run #events /data/Run######
 		num_events = count_events(argc, argv);
 	}
 
+
 	// initalise wep object
 	wep ppp;
 	
@@ -89,23 +90,26 @@ int main(int argc, char **argv) {    // input args: [run #events /data/Run######
 	for(size_t i=0;i<num_events;i++) {
 		// get event
 		int found = ppp.get_event(run, i+1);
-		if (!found) ppp.process_event(); 		
 		
-		for ( auto it = outFiles.begin(); it != outFiles.end(); ++it) {
+		if (found == 0) { 
+			ppp.process_event(); 		
+		
+			for ( auto it = outFiles.begin(); it != outFiles.end(); ++it) {
 			// add run number to each of the output files			
 			*it << i+1 << " ";
-		} 		
+			} 		
 		
-		for (int i=0;i<nsamples;i++) {
-			for(int ipmt=0;ipmt<npmts;ipmt++) {
-				// output of waveforms to text file
-				outFiles[ipmt] << adccraw[i+ipmt*nsamples] << " ";  
+			for (int i=0;i<nsamples;i++) {
+				for(int ipmt=0;ipmt<npmts;ipmt++) {
+					// output of waveforms to text file
+					outFiles[ipmt] << adccraw[i+ipmt*nsamples] << " ";  
+				}
 			}
-		}
 			
-		for ( auto it = outFiles.begin(); it != outFiles.end(); ++it) {
-		// add endl to each of the output files			
-		*it << endl;
+			for ( auto it = outFiles.begin(); it != outFiles.end(); ++it) {
+			// add endl to each of the output files			
+			*it << endl;
+			}
 		}
 	
 	} //end event loop
