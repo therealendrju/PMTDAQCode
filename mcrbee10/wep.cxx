@@ -100,11 +100,6 @@ int wep::readevent(int nnn) {
 
   //check that nRUN written in the file header corresponds to rn written in the event header
 
-
-
-
-
-
   if (nRUN != nr)
     {
       cout << "Possible problem! " << endl;
@@ -113,6 +108,14 @@ int wep::readevent(int nnn) {
       exit(1);
     }
   nEVENT = ne;
+
+  // if in raw waveform mode, set all pmts on and is_ser_found false to allow output of raw waveforms
+  if (isRawWaveforms == true) {
+	for (int i = 0; i < nPMT; i++) {
+		isPMTOn.push_back(true);
+	}
+	is_ser_found = false;
+  }
 
   return 0;
 }

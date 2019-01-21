@@ -67,10 +67,13 @@ int main(int argc, char **argv) {    // input args: [run #events /data/Run######
 	ppp.isRawWaveforms=true;	
 	
 	//get first event to extract number of samples
-	int found = ppp.get_event(run, 1);
+	ppp.open_file(argv[3]);
+	int ret = ppp.readevent();
 	
 	const int nsamples = ppp.nSAMPLES;
 	const int npmts = ppp.nPMT;
+
+	std::cout << "nsamples = " << nsamples << " npmts = " << npmts << std::endl;
 
 	// create output files for raw waveforms
 	vector<ofstream> outFiles;	
@@ -79,40 +82,48 @@ int main(int argc, char **argv) {    // input args: [run #events /data/Run######
 		ss << "waveforms_ch" << ipmt << "_run" << run << ".txt";
 		ofstream outFile(ss.str());
 		if (outFile.is_open()) outFiles.push_back(move(outFile));
-		else cout << "Could not open outfile: " << ss.str() << endl;		
-		//string filename = ss.str();	
-		//outFiles.emplace_back(ofstream{filename.c_str()});
-		
+		else cout << "Could not open outfile: " << ss.str() << endl;				
 	}
 
 	
-	// loop through events
-	for(size_t i=0;i<num_events;i++) {
-		// get event
-		int found = ppp.get_event(run, i+1);
+	// loop through files
+	int ifile = 3;
+	int iargc = argc-3;
+	int event_counter = 0;	
+	do {
+		ppp.open_file(argv[ifile++]);
+		// loop through events in file
+		int ret;
+		do {
+			ret = ppp.readevent();
+			if (ret == 0) {
+				event_counter++;
+
+				// process event and write waveforms to files
+				ppp.process_event();
+			
+				for ( auto it = outFiles.begin(); it != outFiles.end(); ++it) {
+					// add event number to each of the output files			
+					*it << event_counter << " ";
+				} 		
 		
-		if (found == 0) { 
-			ppp.process_event(); 		
-		
-			for ( auto it = outFiles.begin(); it != outFiles.end(); ++it) {
-			// add run number to each of the output files			
-			*it << i+1 << " ";
-			} 		
-		
-			for (int i=0;i<nsamples;i++) {
-				for(int ipmt=0;ipmt<npmts;ipmt++) {
-					// output of waveforms to text file
-					outFiles[ipmt] << adccraw[i+ipmt*nsamples] << " ";  
+				for (int i=0;i<nsamples;i++) {
+					for(int ipmt=0;ipmt<npmts;ipmt++) {
+						// output of waveforms to text file
+						outFiles[ipmt] << adccraw[i+ipmt*nsamples] << " ";  
+					}
+				}
+			
+				for ( auto it = outFiles.begin(); it != outFiles.end(); ++it) {
+					// add endl to each of the output files			
+					*it << endl;
 				}
 			}
-			
-			for ( auto it = outFiles.begin(); it != outFiles.end(); ++it) {
-			// add endl to each of the output files			
-			*it << endl;
-			}
-		}
-	
-	} //end event loop
+		
+		} while (ret == 0);
+		ppp.close_file();
+
+	} while(--iargc > 0);	
 	
 	// close output files
 	for ( auto it = outFiles.begin(); it != outFiles.end(); ++it) {
