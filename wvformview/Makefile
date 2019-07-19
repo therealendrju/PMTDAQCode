@@ -19,7 +19,7 @@ ROOTCFLAGS    = $(shell root-config --cflags)
 ROOTLIBS      = $(shell root-config --libs)
 ROOTGLIBS     = $(shell root-config --glibs)
 
-MYSQLFLAGS    = $(shell mysql_config --cflags)
+#MYSQLFLAGS    = $(shell mysql_config --cflags)
 
 #INCWARP = -I/home/warp/warp100/DataIO
 #LIBWARP = -L/home/warp/warp100/DataIO -lDataIO -Wl,-rpath,/home/warp/warp100/DataIO
@@ -47,14 +47,14 @@ GLIBS         = $(ROOTGLIBS)
 
 WARPID = $(shell uname -i)
 
-SQLLIBS       = -L/usr/lib/mysql -lmysqlclient -lnsl -lm
+SQLLIBS       =  -lnsl -lm
 ifeq ($(WARPID),x86_64)
-SQLLIBS       = -L/usr/lib64/mysql -lmysqlclient -lnsl -lm
+SQLLIBS       =  -lnsl -lm
 endif
 
 SRCS = PMTwidget.cxx maingui.cxx MainFrame.cxx AuxFrame.cxx process.cxx channel.cxx  
 
-OSRCS =  ../mcrbee10/tools.cxx ../mcrbee10/processor_code.cxx  ../mcrbee10/sql_interface.cxx
+OSRCS =  ../mcrbee10/tools.cxx ../mcrbee10/processor_code.cxx  
 
 OSRCS_100 = ../mcrbee10/wep.cxx
 

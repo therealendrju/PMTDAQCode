@@ -622,12 +622,12 @@ results sers[NCHANNELS+1];
   for(int i=1;i<=NCHANNELS;i++)
     sers[i]=ser_chan[i-1]->get_results();
 
-    sql->insert_pmt_sers(sers,onoff,NCHANNELS,runin,0,ppp.vSCALE);
-    sql->insert_pmt_sers(sers,onoff,NCHANNELS,runin,1,ppp.vSCALE);
+   // sql->insert_pmt_sers(sers,onoff,NCHANNELS,runin,0,ppp.vSCALE);
+  //  sql->insert_pmt_sers(sers,onoff,NCHANNELS,runin,1,ppp.vSCALE);
 
 //    if(intStat!=0)  //data were reanalyzed and not extracted from the root file.
  //   {
-	    sql->insert_ser_parameters(runin,ppp.threshold,ppp.integr_window,ppp.chan_before,ppp.chan_after);
+//	    sql->insert_ser_parameters(runin,ppp.threshold,ppp.integr_window,ppp.chan_before,ppp.chan_after);
  //   }
 
 }

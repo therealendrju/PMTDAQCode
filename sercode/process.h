@@ -24,7 +24,7 @@
 #include <fstream>
 #include <TFile.h>
 #include <TStyle.h>
-#include "../mcrbee10/sql_interface.h"
+//#include "../mcrbee10/sql_interface.h"
 #include <vector>
 #include <string>
 #include <map>
@@ -82,7 +82,7 @@ double *pval;
 
 TFile * inin;
 
-sql_interface *sql;
+//sql_interface *sql;
 
 void set_function_pars(TF1 * func,double * pval,double * plow,double * phigh);
 void Fill_events(int run,char * fname,std::vector<std::string> filelist);

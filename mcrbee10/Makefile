@@ -1,4 +1,4 @@
-
+#include -lstdc++
 CC=g++
 
 LD=$(CC)
@@ -19,16 +19,16 @@ ROOTLIBS      = $(shell root-config --libs)
 ROOTGLIBS     = $(shell root-config --glibs)
 # -lMinuit2
 
-MYSQLFLAGS    = $(shell mysql_config --cflags)
+#MYSQLFLAGS    = $(shell mysql_config --cflags)
 
 WARPID = $(shell uname -i)
 
-SQLLIBS       = -L/usr/lib/mysql -lmysqlclient -lnsl -lm
+SQLLIBS       =  -lnsl -lm -lstring
 ifeq ($(WARPID),x86_64)
-SQLLIBS       = -L/usr/lib64/mysql -lmysqlclient -lnsl -lm
+SQLLIBS       =  -lnsl -lm
 endif
 
-SRCS =   tools.cxx  sql_interface.cxx wep.cxx
+SRCS =   tools.cxx   wep.cxx
 SRCS_100 = wep.cxx
  #fitter.cxx
 OBJS = $(SRCS:%.cxx=%.o) 
@@ -65,8 +65,6 @@ process:	$(OBJS_100) $(OBJS) $(OBJS_STAND) process.o
 process.o:	process.cxx
 	$(CC) -c $(CFLAGS) $(ROOTCFLAGS) $< -o $@
 
-sql_interface.o:	sql_interface.cxx
-	$(CC) -c $(CFLAGS) $(MYSQLFLAGS)   $< -o $@
 
 average_sig:	$(OBJS) $(OBJS_100) $(OBJS_STAND) average_sig.o
 	$(CC) average_sig.o $(OBJS) $(OBJS_100) $(OBJS_STAND)  $(LIBWARP) -lz $(ROOTLIBS) $(LIBNR) $(SQLLIBS) -o $@

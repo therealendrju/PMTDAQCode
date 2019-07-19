@@ -2,11 +2,13 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string.h>
+
 
 #include "wep.h"
 
 #include "libDataIO.h"
-#include "sql_interface.h"
+//#include "sql_interface.h"
 
 #include <cstdio>
 
@@ -264,7 +266,7 @@ void wep::get_param(int i, void* r) {
     break;
   }
 }
-
+/*
 int wep::get_database()
 {
 
@@ -343,7 +345,7 @@ int wep::get_database()
   
   
   
-  sql_interface DBinput(DBname);
+//  sql_interface DBinput(DBname);
   
   //std::exit(-1);
   
@@ -462,7 +464,7 @@ int wep::get_database()
   delete[] rests;
   return 0;
 }
-
+*/
 // get sers from txt file
 int wep::get_sers() {
 	PMTSer.resize(0);
